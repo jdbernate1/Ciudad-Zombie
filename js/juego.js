@@ -38,8 +38,7 @@ var Juego = {
     //valla verticales
     new Obstaculo('imagenes/valla_vertical.png', 400, 430, 30, 30, 2),
     new Obstaculo('imagenes/valla_vertical.png', 400, 400, 30, 30, 2),
-    //autos
-    new Obstaculo('imagenes/auto_verde_abajo.png', 180, 360, 15, 30, 2),
+
 
     //otros
 
@@ -65,10 +64,10 @@ var Juego = {
   ],
   // Los enemigos se agregaran en este arreglo.
   enemigos: [
-    new Enemigo('imagenes/zombie_l.png', 600,80,15,21,10, {desdeX: 70, hastaX: 800, desdeY: 80, hastaY: 80})
-
+    new ZombieCaminante('imagenes/zombie_l.png', 600,80,15,21,5, {desdeX: 70, hastaX: 800, desdeY: 80, hastaY: 80}),
+    new ZombieCaminante('imagenes/zombie3_f.png', 450,380,15,21,2, {desdeX: 450, hastaX: 460, desdeY: 350, hastaY: 500}),
+    new ZombieConductor('imagenes/auto_verde_abajo.png', 180, 360, 15, 30, 2, {desdeX: 180, hastaX: 180, desdeY: 200, hastaY: 480}),
   ]
-
 }
 
 /* Se cargan los recursos de las imagenes, para tener un facil acceso
@@ -206,10 +205,11 @@ Juego.dibujar = function() {
 un recorrido por los enemigos para dibujarlos en pantalla ahora habra que hacer
 una funcionalidad similar pero para que se muevan.*/
 Juego.moverEnemigos = function() {
-  // this.enemigos.forEach(function(enemigo) {
+  this.enemigos.forEach( function(enemigo) {
+    enemigo.mover();
 
-  // }
-  /* COMPLETAR */
+  })
+
 };
 
 /* Recorre los enemigos para ver cual esta colisionando con el jugador
