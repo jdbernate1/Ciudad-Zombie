@@ -16,31 +16,37 @@ var Juego = {
   vidasInicial: Jugador.vidas,
   // Indica si el jugador gano
   ganador: false,
+  perdio: false,
 
   obstaculosCarretera: [
     /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
     de ejemplo, pero podras agregar muchos mas. */
 
-    new Obstaculo('imagenes/bache.png', 120, 90, 20, 20, 2),
-    new Obstaculo('imagenes/bache.png', 90, 110, 20, 20, 2),
+    new Obstaculo('imagenes/bache.png', 120, 90, 20, 20, 1),
+    new Obstaculo('imagenes/bache.png', 90, 110, 20, 20, 1),
     //vallas horizontales
-    new Obstaculo('imagenes/valla_horizontal.png', 100, 140, 30, 30, 2),
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 140, 30, 30, 2),
-    new Obstaculo('imagenes/valla_horizontal.png', 170, 140, 30, 30, 2),
+    new Obstaculo('imagenes/valla_horizontal.png', 100, 140, 30, 30, 0),
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 140, 30, 30, 0),
+    new Obstaculo('imagenes/valla_horizontal.png', 170, 140, 30, 30, 0),
 
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 3),
-
-    new Obstaculo('imagenes/valla_horizontal.png', 140, 300, 30, 30, 2),
-    new Obstaculo('imagenes/valla_horizontal.png', 170, 300, 30, 30, 3),
     
-    new Obstaculo('imagenes/valla_horizontal.png', 170, 140, 30, 30, 2),
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 3),
-    //valla verticales
-    new Obstaculo('imagenes/valla_vertical.png', 400, 430, 30, 30, 2),
-    new Obstaculo('imagenes/valla_vertical.png', 400, 400, 30, 30, 2),
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 410, 30, 30, 0),
+    new Obstaculo('imagenes/valla_horizontal.png', 100, 410, 30, 30, 0),
+    new Obstaculo('imagenes/valla_vertical.png', 120, 420, 30, 30, 0),
+    new Obstaculo('imagenes/valla_vertical.png', 120, 450, 30, 30, 0),
+    new Obstaculo('imagenes/valla_vertical.png', 120, 480, 30, 30, 0),
+    
 
+    new Obstaculo('imagenes/valla_horizontal.png', 140, 300, 30, 30, 0),
+    new Obstaculo('imagenes/valla_horizontal.png', 170, 300, 30, 30, 0),
+    
 
-    //otros
+    // //valla verticales
+    new Obstaculo('imagenes/valla_vertical.png', 400, 430, 30, 30, 0),
+    new Obstaculo('imagenes/valla_vertical.png', 400, 400, 30, 30, 0),
+    
+    // //otros
+    new Obstaculo('imagenes/auto_verde_derecha.png', 200, 390, 30, 15, 0),
 
   ],
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
@@ -64,9 +70,13 @@ var Juego = {
   ],
   // Los enemigos se agregaran en este arreglo.
   enemigos: [
-    new ZombieCaminante('imagenes/zombie_l.png', 600,80,15,21,5, {desdeX: 70, hastaX: 800, desdeY: 80, hastaY: 80}),
-    new ZombieCaminante('imagenes/zombie3_f.png', 450,380,15,21,2, {desdeX: 450, hastaX: 460, desdeY: 350, hastaY: 500}),
-    new ZombieConductor('imagenes/auto_verde_abajo.png', 180, 360, 15, 30, 2, {desdeX: 180, hastaX: 180, desdeY: 200, hastaY: 480}),
+    new ZombieCaminante('imagenes/zombie_l.png', 600,80,15,21,2, {desdeX: 70, hastaX: 800, desdeY: 80, hastaY: 80}),
+    new ZombieCaminante('imagenes/zombie3_f.png', 550,380,15,21,1, {desdeX: 400, hastaX: 560, desdeY: 350, hastaY: 600}),
+    // new ZombieCaminante('imagenes/auto_verde_abajo.png', 180, 380, 15, 30, 2, {desdeX: 180, hastaX: 180, desdeY: 200, hastaY: 480}),
+    new ZombieConductor('imagenes/tren_horizontal.png',0, 322 ,90 ,30, 5, {desdeX: 0, hastaX: 900, desdeY: 322, hastaY: 322},'horizontal'),
+    new ZombieConductor('imagenes/tren_vertical.png',644, 0 ,30 ,90, 5, {desdeX: 644, hastaX: 644, desdeY: 0, hastaY: 500},'vertical'),
+    new ZombieConductor('imagenes/tren_vertical.png',678, 500 ,30 ,90, -5, {desdeX: 678, hastaX: 678, desdeY: 0, hastaY: 500},'vertical')
+
   ]
 }
 
@@ -221,9 +231,11 @@ Juego.calcularAtaques = function() {
     if (this.intersecan(enemigo, this.jugador, this.jugador.x, this.jugador.y)) {
       /* Si el enemigo colisiona debe empezar su ataque
       COMPLETAR */
+      enemigo.comenzarAtaque(this.jugador);
     } else {
       /* Sino, debe dejar de atacar
       COMPLETAR */
+      enemigo.dejarDeAtacar();
     }
   }, this);
 };
@@ -236,7 +248,7 @@ Juego.chequearColisiones = function(x, y) {
   var puedeMoverse = true
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
-
+      obstaculo.chocar();
       /*COMPLETAR, obstaculo debe chocar al jugador*/
 
       puedeMoverse = false
@@ -264,6 +276,14 @@ Juego.intersecan = function(elemento1, elemento2, x, y) {
 Juego.dibujarFondo = function() {
   // Si se termino el juego hay que mostrar el mensaje de game over de fondo
   if (this.terminoJuego()) {
+    Dibujante.borrarEntidad(this.jugador);
+    this.obstaculosCarretera.forEach(function(obstaculo) {
+      Dibujante.borrarEntidad(obstaculo);
+    });
+    this.enemigos.forEach(function(enemigo) {
+      Dibujante.borrarEntidad(enemigo);
+    });
+
     Dibujante.dibujarImagen('imagenes/mensaje_gameover.png', 0, 5, this.anchoCanvas, this.altoCanvas);
     document.getElementById('reiniciar').style.visibility = 'visible';
   }

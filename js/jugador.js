@@ -15,7 +15,7 @@ var Jugador = {
     this.x=this.x+movX;
     this.y=this.y+movY;
   },
-  perder_vidas: function(dano){
+  perderVidas: function(dano){
     this.vidas=this.vidas-dano;
   }
 

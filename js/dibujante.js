@@ -23,12 +23,19 @@ var Dibujante = {
     var imagen = Resources.get(ruta);
     this.canvas.getContext('2d').drawImage(imagen, x, y, ancho, alto);
   },
+  borrarImagen:function(x, y, ancho, alto) {
+    this.canvas.getContext('2d').clearRect(x,y,ancho,alto);
+  },
 
   /* Dibuja una entidad en el juego, esto puede ser el jugador, un enemigo, etc
    es decir, cualquiera objeto que separ responder a los mensajes: sprite, x, y, ancho y alto*/
   dibujarEntidad: function (entidad) {
     this.dibujarImagen(entidad.sprite, entidad.x, entidad.y, entidad.ancho, entidad.alto);
   },
+  borrarEntidad: function (entidad){
+    this.borrarImagen(entidad.x, entidad.y, entidad.ancho, entidad.alto);
+  },
+
 
   /* Dibuja un rectangulo del color pasado por paramentro en la posicion x, y
    con ancho y alto*/
