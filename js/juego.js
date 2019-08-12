@@ -265,6 +265,8 @@ Juego.dibujar = function() {
     this.enemigos.forEach(function(enemigo) {
       Dibujante.dibujarEntidad(enemigo);
     });
+
+    Dibujante.dibujarRectangulo('#308446', 760, 465,126, 8);
   }
 
   // El dibujante dibuja las vidas del jugador
