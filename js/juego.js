@@ -181,7 +181,7 @@ Juego.mensaje1 = function() {
 };
 
 Juego.llamarBucle = function () {
-  Juego.buclePrincipal();
+  this.buclePrincipal();
 }
 
 Juego.comenzar = function() {
@@ -192,7 +192,7 @@ Juego.comenzar = function() {
   los movimientos y el pintado de la pantalla. Sera el encargado de calcular los
   ataques, colisiones, etc*/
   Dibujante.dibujarImagen('imagenes/Mensaje1.png', 0, 5, this.anchoCanvas, this.altoCanvas);
-  setTimeout(Juego.llamarBucle,3000);
+  setTimeout(this.buclePrincipal.bind(this),3000);
   // this.buclePrincipal();
 };
 
